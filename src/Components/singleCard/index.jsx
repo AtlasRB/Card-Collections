@@ -1,20 +1,33 @@
 import { useEffect, useState } from "react";
-import CollectedColour from "../allCards/collected";
+import CollectedColour from "../collected";
 
 function OneCardsTable() {
-    const [data, setData] = useState([])
-    useEffect(getOneCardsInfo, [])
+    const [allCardsInfo, setAllCardsInfo] = useState([])
+    const [search, setSearch] = useState('')
+    const [filteredCards, setFilteredCards] = useState([])
+    useEffect(getAllCardsInfo, [])
 
-    function getOneCardsInfo() {
-        fetch('http://localhost:8000/api/card/2')
-        .then(function (response) {
-            return response.json()
-        }).then(function (data) {
-            setData(data.data)
+    function getAllCardsInfo () {
+        fetch('http://localhost:8000/api/card')
+        .then(response => response.json())
+        .then(data => {
+            setAllCardsInfo(data.data);
+            setFilteredCards(data.data)
         })
     }
 
+    const handleInputChange = (e) => {
+        const searchTerm = e.target.value;
+        setSearch(searchTerm)
+        const filteredItems = allCardsInfo.filter((card) =>
+            card.name.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+        setFilteredCards(filteredItems)
+    }
+
     return (
+        <>
+        <input type="text" value={search} onChange={handleInputChange} placeholder="Type to search by name"/>
         <table className="bg-slate-100">
             <thead>
                 <tr>
@@ -25,14 +38,17 @@ function OneCardsTable() {
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td className="border border-slate-500 px-10">{data.name}</td>
-                    <td className="border border-slate-500 px-10 text-center">{data.number}</td>
-                    <td className="border border-slate-500 px-10">{data.type}</td>
-                    <CollectedColour collected={data.collected}/>
-                </tr>
-            </tbody>
+                {filteredCards.map(card => 
+                    <tr>
+                        <td className="border border-slate-500 px-10">{card.name}</td>
+                        <td className="border border-slate-500 px-10 text-center">{card.number}</td>
+                        <td className="border border-slate-500 px-10">{card.type}</td>
+                        <CollectedColour collected={card.collected}/>
+                    </tr>
+                )}
+            </tbody>  
         </table>
+        </>
     )
 }
 

@@ -12,7 +12,6 @@ function AllCardsTable() {
             setAllCardsInfo(data.data);
         })
     }
-    console.log(allCardsInfo) 
 
     return (
         <table className="bg-slate-100">
