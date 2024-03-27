@@ -7,6 +7,7 @@ function App() {
   const [searchName, setSearchName] = useState('')
   const [searchNumber, setSearchNumber] = useState('')
   const [filteredCards, setFilteredCards] = useState([]);
+  const [filteredCardsCallback, setFilteredCardsCallback] = useState([])
   const [filterOption, setFilterOption] = useState('all');
   useEffect(getAllCardsInfo, [])
 
@@ -14,20 +15,22 @@ function App() {
       fetch('http://localhost:8000/api/card')
       .then(response => response.json())
       .then(data => {
-          setAllCardsInfo(data.data);
+          setAllCardsInfo(data.data)
           setFilteredCards(data.data)
+          setFilteredCardsCallback(data.data)
       })
   }
 
   const handleInputChangeName = (e) => {
-      const searchTerm = e.target.value;
-      setSearchName(searchTerm)
-      const filteredItems = allCardsInfo.filter((card) =>
-          card.name.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-      setFilteredCards(filteredItems)
+    const searchTerm = e.target.value;
+    setSearchName(searchTerm)
+    const filteredItems = allCardsInfo.filter((card) =>
+        card.name.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    setFilteredCards(filteredItems)
+    setFilteredCardsCallback(filteredItems)
   }
-
+  console.log(filteredCards)
   const handleInputChangeNumber = (e) => {
     const searchTerm = e.target.value;
     setSearchNumber(searchTerm)
@@ -35,6 +38,9 @@ function App() {
         String(card.number).includes(searchTerm)
     )
     setFilteredCards(filteredItems)
+    if (e.target.value == "") {
+       setFilteredCards(filteredCardsCallback)
+    }
   }
 
   const handleFilterChange = (filter) => {
