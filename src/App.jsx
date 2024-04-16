@@ -34,7 +34,7 @@ function App() {
 
   return (
       <div className="flex flex-col items-center gap-5 bg-pokemon1 min-h-screen">
-        <div className="flex self-center gap-5 mt-5">
+        <div className="flex flex-col md:flex-row self-center gap-5 mt-5">
           <button onClick={() => handleFilterChange('all')} className="p-3 w-48 text-white bg-blue-700 hover:bg-blue-800 rounded-lg">Show All</button>
           <button onClick={() => handleFilterChange('true')} className="p-3 w-48 text-white bg-blue-700 hover:bg-blue-800 rounded-lg">Show Collected</button>
           <button onClick={() => handleFilterChange('false')} className="p-3 w-48 text-white bg-blue-700 hover:bg-blue-800 rounded-lg">Show Not Collected</button>
@@ -45,10 +45,10 @@ function App() {
           <table className="bg-slate-100 border border-black border-2 mb-10">
               <thead>
                   <tr className="border-b-2">
-                      <th className="border border-black border-y-2 px-10">Name</th>
-                      <th className="border border-black border-y-2 px-10">Number</th>
-                      <th className="border border-black border-y-2 px-10">Type</th>
-                      <th className="border border-black border-y-2 px-10">Collected</th>
+                      <th className="border border-black border-y-2">Name</th>
+                      <th className="border border-black border-y-2 px-2 md:px-10">Number</th>
+                      <th className="border border-black border-y-2">Type</th>
+                      <th className="border border-black border-y-2 px-2 md:px-10">Collected</th>
                   </tr>
               </thead>
               <tbody>
@@ -58,9 +58,9 @@ function App() {
                           (filterOption === 'false' && !card.collected)) {
                           return (
                               <tr key={card.id}>
-                                  <td className="border border-black px-10">{card.name}</td>
-                                  <td className="border border-black px-10 text-center">{card.number}</td>
-                                  <td className="border border-black px-10">{card.type}</td>
+                                  <td className="border border-black px-2 md:px-10">{card.name}</td>
+                                  <td className="border border-black text-center">{card.number}</td>
+                                  <td className="border border-black px-2 md:px-10">{card.type}</td>
                                   <CollectedColour collected={card.collected}/>
                               </tr>
                           );
