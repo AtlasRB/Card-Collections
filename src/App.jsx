@@ -12,7 +12,7 @@ function App() {
   useEffect(getAllCardsInfo, [])
 
   function getAllCardsInfo () {
-      fetch('http://localhost:8000/api/card')
+      fetch('https://cardcollector.2024-connory.dev.io-academy.uk/api/card')
       .then(response => response.json())
       .then(data => {
           setAllCardsInfo(data.data)
