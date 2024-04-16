@@ -7,40 +7,25 @@ function App() {
   const [searchName, setSearchName] = useState('')
   const [searchNumber, setSearchNumber] = useState('')
   const [filteredCards, setFilteredCards] = useState([]);
-  const [filteredCardsCallback, setFilteredCardsCallback] = useState([])
   const [filterOption, setFilterOption] = useState('all');
+  
   useEffect(getAllCardsInfo, [])
 
   function getAllCardsInfo () {
-      fetch('https://cardcollector.2024-connory.dev.io-academy.uk/api/card')
+      fetch('http://localhost:8000/api/card')
       .then(response => response.json())
       .then(data => {
           setAllCardsInfo(data.data)
           setFilteredCards(data.data)
-          setFilteredCardsCallback(data.data)
       })
   }
 
-  const handleInputChangeName = (e) => {
-    const searchTerm = e.target.value;
-    setSearchName(searchTerm)
+  const handleInputChange = () => {
     const filteredItems = allCardsInfo.filter((card) =>
-        card.name.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    setFilteredCards(filteredItems)
-    setFilteredCardsCallback(filteredItems)
-  }
-  console.log(filteredCards)
-  const handleInputChangeNumber = (e) => {
-    const searchTerm = e.target.value;
-    setSearchNumber(searchTerm)
-    const filteredItems = filteredCards.filter((card) =>
-        String(card.number).includes(searchTerm)
-    )
-    setFilteredCards(filteredItems)
-    if (e.target.value == "") {
-       setFilteredCards(filteredCardsCallback)
-    }
+      card.name.toLowerCase().includes(searchName.toLowerCase()) &&
+      String(card.number).includes(searchNumber)
+    );
+    setFilteredCards(filteredItems);
   }
 
   const handleFilterChange = (filter) => {
@@ -54,9 +39,10 @@ function App() {
           <button onClick={() => handleFilterChange('true')} className="p-3 w-48 text-white bg-blue-700 hover:bg-blue-800 rounded-lg">Show Collected</button>
           <button onClick={() => handleFilterChange('false')} className="p-3 w-48 text-white bg-blue-700 hover:bg-blue-800 rounded-lg">Show Not Collected</button>
         </div>
-        <input type="text" value={searchName} onChange={handleInputChangeName} placeholder="Type to search by name" className="p-1 w-96 rounded-md"/>
-        <input type="text" value={searchNumber} onChange={handleInputChangeNumber} placeholder="Type to search by number" className="p-1 w-96 rounded-md"/>
-          <table className="bg-slate-100 border border-black border-2">
+        <input type="text" value={searchName} onChange={(e) => setSearchName(e.target.value)} placeholder="Type to search by name" className="p-1 w-96 rounded-md"/>
+        <input type="text" value={searchNumber} onChange={(e) => setSearchNumber(e.target.value)} placeholder="Type to search by number" className="p-1 w-96 rounded-md"/>
+        <button type="button" onClick={handleInputChange} className="p-1 w-48 bg-white hover:bg-slate-100 rounded-md">Search</button>
+          <table className="bg-slate-100 border border-black border-2 mb-10">
               <thead>
                   <tr className="border-b-2">
                       <th className="border border-black border-y-2 px-10">Name</th>
@@ -87,4 +73,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
